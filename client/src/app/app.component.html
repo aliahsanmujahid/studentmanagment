@@ -1,0 +1,117 @@
+<h2 *ngIf="(accountService.currentUser$ | async) === null">BlueBay IT</h2>
+
+<span *ngIf="(accountService.currentUser$ | async)">
+  <h2 *appHasRole='["Admin"]'>Admin</h2>
+  <h2 *appHasRole='["Teacher"]'>Teacher</h2>
+  <h2 *appHasRole='["Student"]'>Student</h2>
+</span>
+
+<p></p>
+
+<div class="center">
+
+  <span *ngIf="(accountService.currentUser$ | async)">
+  <span *appHasRole='["Admin"]'>
+  <div class="row">
+    <table class="table">
+        <tr>
+            <th style="width: 30%;">Email</th>
+            <th style="width: 40%;">Active roles</th>
+            <th style="width: 30%;"></th>
+        </tr>
+        <tr *ngFor="let user of users">
+            <td>{{user.email}}</td>
+            <td>{{user.roles}}</td>
+        </tr>
+    </table>
+</div>
+<div>
+  <h2>Edit Role</h2>
+  <form #editForm="ngForm" (ngSubmit)="updateUserRoles()" autocomplete="off">
+      <label for="fname">Email</label>
+      <input [(ngModel)]="roles.email" type="text" name="email" placeholder="Email..">
+  
+      <label for="lname">Roles</label>
+      <input [(ngModel)]="roles.roles" type="text" name="roles" placeholder="Roles..">
+
+      <input type="submit" value="Submit">
+    </form>
+    <!-- {{roles | json }} -->
+</div>
+</span>
+</span>
+
+
+
+
+  <div *ngFor="let item of classes" class="card">
+    <div class="container">
+      <h4><b>{{item.className}}</b></h4>
+    </div>
+  </div>
+
+  <form #loginForm="ngForm" class="modal-content" (ngSubmit)="login()" *ngIf="(accountService.currentUser$ | async) === null">
+    <div class="row">
+      <div class="col-25">
+        <label for="fname">Email</label>
+      </div>
+      <div class="col-75">
+        <input [(ngModel)]="model.email" type="text" id="fname" name="firstname" required min="2" placeholder="Your Email..">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-25">
+        <label for="lname">Password</label>
+      </div>
+      <div class="col-75">
+        <input [(ngModel)]="model.password" type="text" id="lname" name="lastname" required min="2" placeholder="Your Password..">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-75">
+        <input [disabled]="loginForm.invalid" type="submit" value="Submit">
+      </div>
+    </div>
+    </form>
+
+    <span *appHasRole='["Student"]'>
+    <form #usercodeForm="ngForm" class="modal-content" (ngSubmit)="joinclass()">
+      <div class="row">
+        <div class="col-25">
+          <label for="fname">Join Class</label>
+        </div>
+        <div class="col-75">
+          <input [(ngModel)]="newclass.classcode" type="text" id="fname" name="firstname" required min="2" placeholder="Your Class Code..">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-75">
+          <input [disabled]="usercodeForm.invalid" type="submit" value="Submit">
+        </div>
+      </div>
+      </form>
+    </span>
+
+
+      <span *appHasRole='["Teacher"]'>
+        <form #createclassForm="ngForm" class="modal-content" (ngSubmit)="createclass()">
+          <div class="row">
+            <div class="col-25">
+              <label for="fname">Create Class</label>
+            </div>
+            <div class="col-75">
+              <input [(ngModel)]="newclass.classname" type="text" id="fname" name="firstname" required min="2" placeholder="Class Name..">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-75">
+              <input [disabled]="createclassForm.invalid" type="submit" value="Submit">
+            </div>
+          </div>
+          </form>
+      </span>
+
+      
+      <br>
+      <button (click)="logout()" *ngIf="(accountService.currentUser$ | async)">Log Out</button>
+</div>
